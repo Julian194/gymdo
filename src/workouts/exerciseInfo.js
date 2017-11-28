@@ -1,13 +1,24 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-import {Collection, CollectionItem, Row, Col,Preloader } from 'react-materialize';
+import axios from '../csurf/axios';
+import {Collection, CollectionItem, Row, Col,Preloader ,Badge} from 'react-materialize';
 import renderHTML from 'react-render-html';
-
+import { connect } from 'react-redux';
+import { getUserFavorites } from '../redux/actions';
 
 class ExerciseInfo extends Component{
   constructor(props){
     super(props)
     this.state = {}
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(){
+    const {id} = this.props.params;
+    axios.post('/addFavorite', {
+      favorite : id,
+      url: this.state.url
+    })
   }
 
   getExercise(id){
@@ -31,10 +42,11 @@ class ExerciseInfo extends Component{
   componentDidMount(){
     const {id} = this.props.params;
     this.getExercise(id)
+    this.props.getUserFavorites()
     }
 
     render(){
-      if(!this.state.name || !this.state.url ){
+      if(!this.state.name || !this.state.url){
         return (
           <Row>
             <Col s={4}>
@@ -44,9 +56,15 @@ class ExerciseInfo extends Component{
         )
       }
 
+      // if(this.props.favorites.find(exe => exe.favorite_id !== this.props.params.id)){
+      //   console.log("it is favorite")
+      // }
+
+
       return(
         <div>
-          <Collection header={this.state.name} >
+          <Collection header={this.state.name}>
+            <CollectionItem><a onClick={this.handleClick} className="btn-floating btn-small waves-effect waves-dark red"><i className="material-icons">favorite</i></a> Remember me</CollectionItem>
           	<CollectionItem>Categroy: {this.state.category}</CollectionItem>
           	<CollectionItem>Muscle: {this.state.muscles}</CollectionItem>
             <CollectionItem>Secondary Muscle: {this.state.secondaryMuscle}</CollectionItem>
@@ -59,4 +77,16 @@ class ExerciseInfo extends Component{
     }
 }
 
-export default ExerciseInfo
+const mapStateToProps = function(state) {
+    return {
+      favorites: state.favorites,
+    }
+}
+
+const mapDispatchToProps = function(dispatch) {
+  return {
+    getUserFavorites:() => dispatch(getUserFavorites()),
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(ExerciseInfo);

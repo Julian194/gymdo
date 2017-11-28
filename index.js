@@ -2,20 +2,21 @@ const express = require('express');
 const app = express();
 const compression = require('compression');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser')
-const cookieSession = require('cookie-session')
-const bcrypt = require('./bcrypt.js')
+const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
+const bcrypt = require('./bcrypt.js');
 const spicedPg = require('spiced-pg');
-const dbQuery = require('./database/userQueries')
-const exerciseQuery = require('./database/exerciseQueries')
+const dbQuery = require('./database/userQueries');
+const exerciseQuery = require('./database/exerciseQueries');
 const toS3 = require('./toS3').toS3;
 const s3Url = require('./config.json').s3Url;
 const multer = require('multer');
 const uidSafe = require('uid-safe');
 const path = require('path');
+const csurf = require('csurf');
+const secrets = require('./secrets.json');
 
-
-const db = spicedPg(process.env.DATABASE_URL || "postgres:juliankaiser:password@localhost:5432/gymdo");
+const db = spicedPg(`postgres:${secrets.dbuser}:${secrets.dbpassword}@localhost:5432/gymdo`);
 
 var diskStorage = multer.diskStorage({
   destination: function(req, file, callback) {
@@ -55,6 +56,13 @@ if (process.env.NODE_ENV != 'production') {
         target: 'http://localhost:8081/'
     }));
 }
+
+app.use(csurf());
+
+app.use(function(req, res, next){
+    res.cookie('mytoken', req.csrfToken());
+    next();
+});
 
 app.use(express.static(__dirname + '/public'));
 
@@ -204,19 +212,27 @@ app.get('/exercises', (req,res) => {
 app.post('/userWorkoutPlan', (req,res) => {
   const WORKOUT = req.body.data.workoutDay
   const userid = req.session.user.id
-  const{workoutTitle,workoutSplit,workoutDays} = req.body.data.workoutSetup
+  let{workoutTitle,workoutSplit,workoutDays} = req.body.data.workoutSetup
+
 
   WORKOUT.map((day) => {
-    const{id,workoutday,musclegroup,exercise,sets,reps,pause,weight} = day
+    let{id,workoutday,musclegroup,name,sets,reps,pause,weight} = day
+    weight = weight == "" ? Number(weight) : weight
+    pause = pause == "" ? Number(pause) : pause
+    sets = sets = "" ? Number(sets) : sets
+    reps = reps = "" ? Number(reps) : reps
 
-    exerciseQuery.insertWorkout(userid,workoutday,workoutTitle,musclegroup,id,sets,reps,pause,weight)
+    exerciseQuery.insertWorkout(userid,workoutday,workoutTitle,musclegroup,id,sets,reps,pause,weight).catch(err => console.log(err))
 
     exerciseQuery.getExercises().then(result => {
       const CHECK = result.rows
       if(CHECK.find(exe => exe.external_id == id) == undefined){
-        exerciseQuery.insertExercise(musclegroup,exercise,id)
+        exerciseQuery.insertExercise(musclegroup,name,id)
       }
-    })
+      else {
+        res.json({msg: "Exercise exists already"})
+      }
+    }).catch(err => console.log(err))
   })
 })
 
@@ -230,8 +246,37 @@ app.get('/userWorkouts', (req,res) => {
   })
 })
 
-app.get('/')
+app.post('/addFavorite', (req,res) => {
+  console.log(req.body);
+  const favorite_id = req.body.favorite
+  const user_id = req.session.user.id
+  const img_url = req.body.url
 
+  exerciseQuery.addFavoriteExercise(favorite_id,user_id,img_url)
+    .then( result => {
+      console.log("success")
+      res.json({success:true})
+    })
+})
+
+app.get('/getFavoriteExercise', (req,res) => {
+  const user_id = req.session.user.id
+  exerciseQuery.getFavoriteExercise(user_id)
+    .then(result => {
+      res.json({favorites: result.rows})
+    })
+})
+
+app.post('/additionalInfo', (req,res) => {
+  const user_id = req.session.user.id
+  const {workoutName, additionalInfo} = req.body
+  exerciseQuery.insertAdditionalInfo(additionalInfo, workoutName).then(result => res.json({data: result.rows[0]}))
+})
+
+app.post('/deleteWorkout', (req,res) => {
+  const {workoutName} = req.body
+  exerciseQuery.deleteWorkout(workoutName).then(res.json({success:true}))
+})
 
 app.get('*', function(req, res) {
   if (!req.session.user) {

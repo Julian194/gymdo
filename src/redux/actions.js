@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../csurf/axios';
 
 export function getExercises(musclegroup) {
   switch (musclegroup){
@@ -22,6 +22,13 @@ export function getExercises(musclegroup) {
       break;
     case "Hamstring":
       musclegroup = 11;
+      break;
+    case "Abs":
+      musclegroup = 6;
+      break;
+    case "Calfs":
+      musclegroup = 7;
+      break;
   }
 
   return axios.get(`https://wger.de/api/v2/exercise/?muscles=${musclegroup}&status=2&limit=40`)
@@ -62,4 +69,34 @@ export function getUserWorkouts(){
       workouts: data
     }
   })
+}
+
+export function getUserFavorites(){
+  return axios.get('/getFavoriteExercise').then(({data}) => {
+    return {
+      type: 'GET_USER_FAVORITES',
+      favorites: data.favorites
+    }
+  })
+}
+
+export function additionalInfo(data){
+  return {
+    type: "CHANGE_ADD_INFO",
+    newInfo: data.additionalInfo,
+    workoutName : data.workoutName
+  }
+}
+
+export function deleteWorkout(data){
+  return {
+    type: "DELETE_WORKOUT",
+    workoutName : data
+  }
+}
+
+export function emptyworkoutDay(){
+  return {
+    type: "EMPTY_WORKOUT_DAY"
+  }
 }

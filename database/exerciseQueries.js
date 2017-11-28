@@ -1,5 +1,7 @@
 const spicedPg = require('spiced-pg');
-const db = spicedPg(process.env.DATABASE_URL || "postgres:juliankaiser:password@localhost:5432/gymdo");
+const secrets = require('../secrets.json');
+
+const db = spicedPg(`postgres:${secrets.dbuser}:${secrets.dbpassword}@localhost:5432/gymdo`);
 
 module.exports.getExercises = function(){
   const select = "SELECT * FROM exercises"
@@ -26,6 +28,39 @@ module.exports.getUserWorkouts = function (id){
   const select = `SELECT * FROM workout
                   JOIN exercises
                   ON (external_id = workout.exercise)
-                  WHERE user_id = $1`
+                  WHERE user_id = $1
+                  ORDER BY workout_title`
+
   return db.query(select, [id])
+}
+
+module.exports.getWorkoutTitle = function(){
+  const select = `SELECT workout_title, COUNT(*) FROM workout
+                 GROUP BY workout_title
+                 HAVING COUNT(*) > 1`
+  return db.query(select)
+}
+
+module.exports.addFavoriteExercise = function(favorite_id, user_id, img_url){
+  const insert = `INSERT INTO favorite_exercises (favorite_id, user_id, img_url) VALUES ($1,$2,$3)`
+  return db.query(insert, [favorite_id,user_id, img_url])
+}
+
+module.exports.getFavoriteExercise = function(user_id){
+  const select = `SELECT favorite_id, img_url, name FROM favorite_exercises
+                  JOIN exercises
+                  ON (external_id = favorite_id)
+                  WHERE user_id = $1`
+  return db.query(select, [user_id])
+}
+
+module.exports.insertAdditionalInfo = function(additionalInfo, workoutName){
+  const insert = `UPDATE workout SET additional_info = $1 WHERE workout_title = $2 RETURNING additional_info`
+  return db.query(insert, [additionalInfo, workoutName])
+}
+
+module.exports.deleteWorkout = function(workoutName){
+  const remove = `DELETE FROM workout
+                  WHERE workout_title = $1`
+  return db.query(remove, [workoutName])
 }

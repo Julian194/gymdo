@@ -61,6 +61,8 @@ class AddExercise extends Component{
                   <option>Quadriceps</option>
                   <option>Hamstring</option>
                   <option>Shoulder</option>
+                  <option>Abs</option>
+                  <option>Calfs</option>
                 </Input>
 
                 <ExerciseList
@@ -73,12 +75,13 @@ class AddExercise extends Component{
               <Row>
                 <Input name="workoutday" s={4} type='select' label="Workout Day" onChange={this.handleInput}>
                   <option value="" disabled selected>Choose your option</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                  <option>6</option>
+                  <option>Mon</option>
+                  <option>Tue</option>
+                  <option>Wed</option>
+                  <option>Thu</option>
+                  <option>Fri</option>
+                  <option>Sat</option>
+                  <option>Sun</option>
                 </Input>
               </Row>
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import axios from 'axios';
+import axios from '../csurf/axios';
 import { Link } from 'react-router'
 
 const Login = wrapInAuthForm(LoginForm, '/login');

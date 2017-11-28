@@ -28,16 +28,24 @@ nav{
 }
 
 .modal1{
-  position: absolute!important;;
-  background:#1565C0!important;;
-  text-align: center!important;;
-  top: 9%!important;;
-  right: 2%!important;;
-  width: 20%!important;;
-  height: 15%!important;;
+  position: absolute!important;
+  background:#1565C0!important;
+  text-align: center!important;
+  top: 9%!important;
+  right: 2%!important;
+  width: 20%!important;
+  height: 15%!important;
   z-index: 1000 !important;
-  border-radius: 0.3rem!important;;
+  border-radius: 0.3rem!important;
 }
+
+.z{
+  z-index: 1000;
+}
+
+.material-icons {
+  color: #333;
+  }
 
 
 input[type="file"]{
@@ -55,7 +63,14 @@ label #upload-button{
   padding: 7px 7px 7px 7px;
   cursor: pointer;
   color: #fff;
+
 }
+
+/*.flex{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}*/
 
 
 

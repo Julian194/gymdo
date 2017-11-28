@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axios from './csurf/axios';
 import Logo from './logo';
 import ProfilePic from './user/profilePic';
 import ImageUpload from './user/imageUpload';
@@ -52,6 +52,7 @@ export default class App extends React.Component {
           <a href="#" data-activates="mobile-demo" className="button-collapse"><i className="material-icons">menu</i></a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li><Link  to="/my-workout">My Workouts</Link></li>
+              <li><Link  to="/favorites">Favorites</Link></li>
               <li><Link  to="/create-workout">Create Workout</Link></li>
               <li><a href="/logout">Logout</a></li>
               <li><ProfilePic

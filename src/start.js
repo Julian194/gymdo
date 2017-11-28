@@ -8,7 +8,9 @@ import MyWorkouts from './workouts/myWorkouts'
 import ExerciseInfo from './workouts/exerciseInfo'
 import App from './app';
 import Profile from './user/profile'
+import Dashboard from './workouts/dashboard'
 
+// Redux Setup
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxPromise from 'redux-promise';
@@ -32,22 +34,22 @@ const loggedInRouter = (
     <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={CreateWorkout}/>
+        <Route path="/favorites" component={Dashboard}/>
         <Route path="/exercise/:id" component={ExerciseInfo}/>
         <Route path="/create-workout" component={CreateWorkout} />
         <Route path="/my-workout" component={MyWorkouts} />
       </Route>
     </Router>
   </Provider>
-
 );
 
 let router;
-  if(location.pathname === '/welcome'){
-    router = notLoggedInRouter
-  }
-  else{
-    router = loggedInRouter
-  }
+if(location.pathname === '/welcome'){
+  router = notLoggedInRouter
+}
+else{
+  router = loggedInRouter
+}
 
 
 ReactDOM.render(

@@ -1,5 +1,7 @@
 const spicedPg = require('spiced-pg');
-const db = spicedPg(process.env.DATABASE_URL || "postgres:juliankaiser:password@localhost:5432/gymdo");
+const secrets = require('../secrets.json');
+
+const db = spicedPg(`postgres:${secrets.dbuser}:${secrets.dbpassword}@localhost:5432/gymdo`);
 
 module.exports.loginUser = function(email){
   const select = "SELECT * FROM users WHERE email = $1"

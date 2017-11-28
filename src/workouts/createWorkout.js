@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import axios from '../csurf/axios';
 import CreateWorkoutForm from './createWorkoutForm';
 import WorkoutContainer from './workoutContainer'
 import AddExercise from './addExercise';

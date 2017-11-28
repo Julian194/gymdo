@@ -10,7 +10,6 @@ import {Row, Input} from 'react-materialize'
    this.state ={
      workoutTitle: "",
      workoutSplit: "",
-     workoutDays: ""
    }
    this.handleInput = this.handleInput.bind(this)
    this.handleSubmit = this.handleSubmit.bind(this)
@@ -47,15 +46,6 @@ import {Row, Input} from 'react-materialize'
             <option value="Upper/Lower">Upper/Lower</option>
             <option value="Push/Pull/Legs">Push/Pull/Legs</option>
             <option value="Custom">Custom</option>
-          </Input>
-        </Row>
-
-        <Row>
-          <Input name="workoutDays" s={6} type='select' label="Workout Days" onChange={this.handleInput} value={this.state.workoutDays}>
-            <option value="" disabled selected>Choose your option</option>
-            <option value="2">2</option>
-            <option value="4">4</option>
-            <option value="6">6</option>
           </Input>
         </Row>
 
