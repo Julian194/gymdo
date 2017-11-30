@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import axios from '../csurf/axios';
 import CreateWorkoutForm from './createWorkoutForm';
 import WorkoutContainer from './workoutContainer'
@@ -6,7 +6,7 @@ import AddExercise from './addExercise';
 import { connect } from 'react-redux';
 import { getExercises } from '../redux/actions';
 
-class CreateWorkout extends React.Component {
+class CreateWorkout extends Component {
   constructor(props){
     super(props)
     this.state={
@@ -62,17 +62,11 @@ class CreateWorkout extends React.Component {
   }
 }
 
-const mapStateToProps = function(state) {
-    return {
-      exercises: state.exercises,
-    }
-}
-
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getExercises: ()=> dispatch(getExercises()),
+    getExercises: () => dispatch(getExercises())
 
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateWorkout);
+export default connect(null, mapDispatchToProps)(CreateWorkout);

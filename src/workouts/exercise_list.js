@@ -8,18 +8,16 @@ const ExerciseList = (props) => {
     return null
   }
 
-    const ExerciseListItems = props.exercises.map((exercise) => {
-      return <ExercisListItem  exercise={exercise}/>
-    });
+  const ExerciseListItems = props.exercises.map((exercise) => {
+    return <ExercisListItem  exercise={exercise}/>
+  });
 
-
-    return(
-        <Input name="name" s={4} type='select' label="Excercise" onChange={props.handleInput} >
-          <option value="" disabled selected>Choose your option</option>
-          {ExerciseListItems}
-        </Input>
-    )
-  }
-
+  return(
+    <Input name="name" s={4} type='select' label="Excercise" onChange={props.handleInput} >
+      <option value="" disabled selected>Choose your option</option>
+      {ExerciseListItems}
+    </Input>
+  )
+}
 
 export default ExerciseList;

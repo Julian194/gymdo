@@ -5,7 +5,7 @@ const WorkoutTable = (props) => {
   const {workout} = props
 
   return(
-    <table className="highlight bordered col s12">
+    <table className="striped col s12">
       <thead>
         <tr>
           <th>Exercise</th>
@@ -37,8 +37,7 @@ function createRows(arr) {
       </tr>
       )
     })
-    return rows
+  return rows
 }
-
 
 export default WorkoutTable

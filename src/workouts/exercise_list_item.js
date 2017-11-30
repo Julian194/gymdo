@@ -4,7 +4,7 @@ const ExerciseListItem = (props) => {
   const {exercise, onClick} = props
   return (
     <option id={exercise.id} key={exercise.id}>
-    {exercise.name}
+      {exercise.name}
     </option>
   )
 }

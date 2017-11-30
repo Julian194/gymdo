@@ -30,7 +30,6 @@ module.exports.getUserWorkouts = function (id){
                   ON (external_id = workout.exercise)
                   WHERE user_id = $1
                   ORDER BY workout_title`
-
   return db.query(select, [id])
 }
 

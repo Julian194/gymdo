@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import { getUserWorkouts,additionalInfo ,deleteWorkout} from '../redux/actions';
 import { connect } from 'react-redux';
-import WorkoutTable from './workoutTable';
-import {Collapsible, CollapsibleItem} from 'react-materialize';
+import { getUserWorkouts,additionalInfo ,deleteWorkout } from '../redux/actions';
 import axios from '../csurf/axios';
+import WorkoutTable from './workoutTable';
+import { Collapsible, CollapsibleItem } from 'react-materialize';
 
 
 class MyWorkouts extends Component{
@@ -24,7 +24,7 @@ class MyWorkouts extends Component{
   }
 
   handleClick(e){
-    axios.post('/additionalInfo',{
+    axios.post('/additionalInfo', {
       additionalInfo: this.state.additionalInfo,
       workoutName: e.currentTarget.name
     })
@@ -58,8 +58,6 @@ class MyWorkouts extends Component{
       return null
     }
 
-    let keys = _.keys(userWorkouts);
-
     const allWorkouts = Object.keys(userWorkouts).map(key => {
       let name =userWorkouts[key][0].workout_title
       let addInfo = userWorkouts[key][0].additional_info
@@ -69,8 +67,8 @@ class MyWorkouts extends Component{
             <div className="row">
               <WorkoutTable workout={userWorkouts[key]}/>
             </div>
-            <div>Notes: {addInfo}</div>
-            <div className="divider"></div>
+            <div>Notes:{addInfo}</div>
+            <div className="divider" />
             <div className="row">
               <div className="input-field col s12">
                 <textarea id="textarea1"
@@ -117,10 +115,6 @@ class MyWorkouts extends Component{
 
 const mapStateToProps = function(state){
   return {
-    exercises : state.exercises,
-    workoutSetup: state.workoutSetup,
-    currentExercise: state.currentExercise,
-    workoutDay: state.workoutDay,
     userWorkouts: state.userWorkouts
   }
 }

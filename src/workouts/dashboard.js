@@ -21,6 +21,7 @@ class Dashboard extends Component {
     if(!this.props.favorites){
       return null
     }
+
     const {favorites} = this.props
 
     const cards = (
@@ -43,27 +44,27 @@ class Dashboard extends Component {
         </div>
       )}
       </div>
-      );
+    );
 
     return(
       <div>
-      <h4>My favorite exercises</h4>
-      {cards}
+        <h4>My favorite exercises</h4>
+        {cards}
       </div>
     )
   }
 }
 
 
-const mapStateToProps = function(state) {
-    return {
-      favorites: state.favorites,
-    }
+const mapStateToProps = (state) => {
+  return {
+    favorites: state.favorites,
+  }
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
-    getUserFavorites:() => dispatch(getUserFavorites()),
+    getUserFavorites: () => dispatch(getUserFavorites()),
   }
 }
 

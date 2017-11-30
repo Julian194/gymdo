@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const bcrypt = require('./bcrypt.js');
 const spicedPg = require('spiced-pg');
-const dbQuery = require('./database/userQueries');
+const userQuery = require('./database/userQueries');
 const exerciseQuery = require('./database/exerciseQueries');
 const toS3 = require('./toS3').toS3;
 const s3Url = require('./config.json').s3Url;
@@ -59,7 +59,7 @@ if (process.env.NODE_ENV != 'production') {
 
 app.use(csurf());
 
-app.use(function(req, res, next){
+app.use((req, res, next) => {
     res.cookie('mytoken', req.csrfToken());
     next();
 });
@@ -68,7 +68,7 @@ app.use(express.static(__dirname + '/public'));
 
 // ************ ROUTES ************ //
 
-app.get('/welcome', function(req, res) {
+app.get('/welcome', (req, res) => {
   if (req.session.user) {
     res.redirect('/')
   } else {
@@ -85,7 +85,7 @@ app.post('/register', (req, res) => {
   } else {
     bcrypt.hashPassword(req.body.password)
       .then((hash) => {
-        return dbQuery.addUser(first, last, email, hash)
+        return userQuery.addUser(first, last, email, hash)
         .then((result) => {
           const {first, last, id} = result.rows[0]
           req.session.user = {
@@ -108,7 +108,7 @@ app.post('/login', (req, res) => {
       success: false
     })
   } else {
-    dbQuery.loginUser(email)
+    userQuery.loginUser(email)
       .then((result) => {
         const {first,last,id,bio,password,profilepicurl} = result.rows[0];
         const data = result.rows[0];
@@ -142,7 +142,7 @@ app.post('/uploadUserPicture', uploader.single('file'), (req, res) => {
   const {filename} = req.file
   if (req.file) {
     toS3(req.file).then(() => {
-      return  dbQuery.updateUserImg(filename, req.session.user.id)
+      return  userQuery.updateUserImg(filename, req.session.user.id)
       .then(() => {
         const url = `${s3Url}${filename}`
         console.log("saved in db")
@@ -150,7 +150,9 @@ app.post('/uploadUserPicture', uploader.single('file'), (req, res) => {
           success: true,
           url: url
         });
-      }).catch(err => console.log(err));
+      }).catch(err =>
+        console.log(err)
+      );
     })
   } else {
     res.json({
@@ -159,31 +161,11 @@ app.post('/uploadUserPicture', uploader.single('file'), (req, res) => {
   }
 })
 
-app.post('/uploadTitleImage', uploader.single('file'), (req, res) => {
-  const {filename} = req.file
-  if (req.file) {
-    toS3(req.file).then(() => {
-      return  dbQuery.updateTitleImg(filename, req.session.user.id)
-      .then(() => {
-        const url = `${s3Url}${filename}`
-        console.log("saved in db")
-        res.json({
-          success: true,
-          url: url
-        });
-      })
-    }).catch(err => console.log(err));
-  } else {
-    res.json({
-      success: false
-    });
-  }
-})
 
 app.get('/user', (req, res) => {
   const loggedInUserId = req.session.user.id
 
-  dbQuery.getUser(loggedInUserId)
+  userQuery.getUser(loggedInUserId)
   .then((result) => {
     let {first,last,id,profilepicurl,titleimageurl} = result.rows[0]
 
@@ -197,9 +179,10 @@ app.get('/user', (req, res) => {
       profilepicurl: profilepicurl,
       titleimageurl:titleimageurl
     })
-  }).catch(err => console.log(err));
+  }).catch(err =>
+    console.log(err)
+  );
 })
-
 
 
 // ************ Workout Specific Routes ************ //
@@ -232,7 +215,9 @@ app.post('/userWorkoutPlan', (req,res) => {
       else {
         res.json({msg: "Exercise exists already"})
       }
-    }).catch(err => console.log(err))
+    }).catch(err =>
+      console.log(err)
+    )
   })
 })
 
@@ -247,13 +232,12 @@ app.get('/userWorkouts', (req,res) => {
 })
 
 app.post('/addFavorite', (req,res) => {
-  console.log(req.body);
   const favorite_id = req.body.favorite
   const user_id = req.session.user.id
   const img_url = req.body.url
 
   exerciseQuery.addFavoriteExercise(favorite_id,user_id,img_url)
-    .then( result => {
+    .then(result => {
       console.log("success")
       res.json({success:true})
     })
@@ -275,10 +259,16 @@ app.post('/additionalInfo', (req,res) => {
 
 app.post('/deleteWorkout', (req,res) => {
   const {workoutName} = req.body
-  exerciseQuery.deleteWorkout(workoutName).then(res.json({success:true}))
+  exerciseQuery.deleteWorkout(workoutName)
+    .then(res.json({
+        success:true
+      })
+    )
 })
 
-app.get('*', function(req, res) {
+// -------------------------- //
+
+app.get('*', (req, res) => {
   if (!req.session.user) {
     res.redirect('/welcome')
   } else {
@@ -287,6 +277,6 @@ app.get('*', function(req, res) {
 });
 
 
-app.listen(8080, function() {
+app.listen(8080, () => {
     console.log("I'm listening.")
 });

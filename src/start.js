@@ -2,13 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router';
 import { Welcome } from './auth/welcome';
-import {Login,Registration} from './auth/AuthForm'
-import CreateWorkout from './workouts/createWorkout'
-import MyWorkouts from './workouts/myWorkouts'
-import ExerciseInfo from './workouts/exerciseInfo'
+import {Login,Registration} from './auth/authForm';
+import CreateWorkout from './workouts/createWorkout';
+import MyWorkouts from './workouts/myWorkouts';
+import ExerciseInfo from './workouts/exerciseInfo';
 import App from './app';
-import Profile from './user/profile'
-import Dashboard from './workouts/dashboard'
+import Dashboard from './workouts/dashboard';
 
 // Redux Setup
 import { Provider } from 'react-redux';
@@ -50,7 +49,6 @@ if(location.pathname === '/welcome'){
 else{
   router = loggedInRouter
 }
-
 
 ReactDOM.render(
     router,

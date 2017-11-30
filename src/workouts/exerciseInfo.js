@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import axios from '../csurf/axios';
-import {Collection, CollectionItem, Row, Col,Preloader ,Badge} from 'react-materialize';
-import renderHTML from 'react-render-html';
 import { connect } from 'react-redux';
+import axios from '../csurf/axios';
+import renderHTML from 'react-render-html';
 import { getUserFavorites } from '../redux/actions';
+import {Collection, CollectionItem, Row, Col, Preloader, Badge} from 'react-materialize';
 
 class ExerciseInfo extends Component{
   constructor(props){
@@ -43,49 +43,44 @@ class ExerciseInfo extends Component{
     const {id} = this.props.params;
     this.getExercise(id)
     this.props.getUserFavorites()
-    }
+  }
 
-    render(){
-      if(!this.state.name || !this.state.url){
-        return (
-          <Row>
-            <Col s={4}>
-		          <Preloader size='big'/>
-	          </Col>
-          </Row>
-        )
-      }
-
-      // if(this.props.favorites.find(exe => exe.favorite_id !== this.props.params.id)){
-      //   console.log("it is favorite")
-      // }
-
-
-      return(
-        <div>
-          <Collection header={this.state.name}>
-            <CollectionItem><a onClick={this.handleClick} className="btn-floating btn-small waves-effect waves-dark red"><i className="material-icons">favorite</i></a> Remember me</CollectionItem>
-          	<CollectionItem>Categroy: {this.state.category}</CollectionItem>
-          	<CollectionItem>Muscle: {this.state.muscles}</CollectionItem>
-            <CollectionItem>Secondary Muscle: {this.state.secondaryMuscle}</CollectionItem>
-          	<CollectionItem>Description:{renderHTML(this.state.description)}</CollectionItem>
-          	<CollectionItem>Equipment: {this.state.equipment}</CollectionItem>
-          </Collection>
-          <img src={this.state.url} style={{width:"300px"}}/>
-        </div>
+  render(){
+    if(!this.state.name || !this.state.url){
+      return (
+        <Row>
+          <Col s={4}>
+	          <Preloader size='big'/>
+          </Col>
+        </Row>
       )
     }
+
+    return(
+      <div>
+        <Collection header={this.state.name}>
+          <CollectionItem><a onClick={this.handleClick} className="btn-floating btn-small waves-effect waves-dark red"><i className="material-icons">favorite</i></a> Remember me</CollectionItem>
+        	<CollectionItem>Categroy: {this.state.category}</CollectionItem>
+        	<CollectionItem>Muscle: {this.state.muscles}</CollectionItem>
+          <CollectionItem>Secondary Muscle: {this.state.secondaryMuscle}</CollectionItem>
+        	<CollectionItem>Description:{renderHTML(this.state.description)}</CollectionItem>
+        	<CollectionItem>Equipment: {this.state.equipment}</CollectionItem>
+        </Collection>
+        <img src={this.state.url} style={{width:"300px"}}/>
+      </div>
+    )
+  }
 }
 
-const mapStateToProps = function(state) {
-    return {
-      favorites: state.favorites,
-    }
-}
-
-const mapDispatchToProps = function(dispatch) {
+const mapStateToProps = (state) => {
   return {
-    getUserFavorites:() => dispatch(getUserFavorites()),
+    favorites: state.favorites
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUserFavorites:() => dispatch(getUserFavorites())
   }
 }
 

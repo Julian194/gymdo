@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { shipUserWorkout ,emptyworkoutDay} from '../redux/actions';
+import { emptyworkoutDay} from '../redux/actions';
 import axios from '../csurf/axios';
 import WorkoutTable2 from './workoutTable2'
 import {Collapsible, CollapsibleItem} from 'react-materialize';
@@ -9,6 +9,7 @@ import {Collapsible, CollapsibleItem} from 'react-materialize';
 class WorkoutContainer extends Component {
   constructor(props){
     super(props)
+
     this.handleClick = this.handleClick.bind(this)
   }
 
@@ -44,7 +45,6 @@ class WorkoutContainer extends Component {
       )
     })
 
-
     return (
       <div>
           <div className="row">
@@ -65,22 +65,17 @@ class WorkoutContainer extends Component {
 }
 
 
-const mapStateToProps = function(state){
+const mapStateToProps = (state) => {
   return {
-    exercises : state.exercises,
     workoutSetup: state.workoutSetup,
-    currentExercise: state.currentExercise,
     workoutDay: state.workoutDay
   }
 }
 
 const mapDispatchToProps = function (dispatch) {
   return {
-    shipUserWorkout: (data) => dispatch(shipUserWorkout(data)),
     emptyworkoutDay : () => dispatch(emptyworkoutDay())
   }
 }
-
-
 
 export default connect(mapStateToProps,mapDispatchToProps)(WorkoutContainer);

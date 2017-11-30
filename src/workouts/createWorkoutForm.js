@@ -6,29 +6,29 @@ import {Row, Input} from 'react-materialize'
 
  class CreatWorkoutForm extends Component{
   constructor(props){
-   super(props)
-   this.state ={
+    super(props)
+    this.state ={
      workoutTitle: "",
      workoutSplit: "",
-   }
-   this.handleInput = this.handleInput.bind(this)
-   this.handleSubmit = this.handleSubmit.bind(this)
- }
+    }
+  this.handleInput = this.handleInput.bind(this)
+  this.handleSubmit = this.handleSubmit.bind(this)
+  }
 
- handleSubmit(e){
-   e.preventDefault();
-   this.props.getWorkoutSetup(this.state);
-   this.props.onClick()
- }
+  handleSubmit(e){
+    e.preventDefault();
+    this.props.getWorkoutSetup(this.state);
+    this.props.onClick()
+  }
 
- handleInput(e){
-   this.setState({
+  handleInput(e){
+    this.setState({
      [e.target.name] : e.target.value
-   })
- }
+    })
+  }
 
- render(){
-  return(
+  render(){
+   return(
     <div className="row">
       <form onSubmit={ this.handleSubmit} className="col s12">
 
@@ -38,7 +38,6 @@ import {Row, Input} from 'react-materialize'
             <label>Workout Title</label>
           </div>
         </div>
-
 
         <Row>
           <Input name="workoutSplit" s={6} type='select' label="Workout Split" onChange={this.handleInput} value={this.state.workoutSplit}>
@@ -52,11 +51,11 @@ import {Row, Input} from 'react-materialize'
         <input type="submit" className="waves-effect waves-light btn"/>
       </form>
     </div>
-  )
-}
+    )
+  }
 }
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
     getWorkoutSetup : (obj) => {dispatch(getWorkoutSetup(obj))}
   }

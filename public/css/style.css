@@ -28,25 +28,20 @@ nav{
 }
 
 .modal1{
-  position: absolute!important;
-  background:#1565C0!important;
-  text-align: center!important;
-  top: 9%!important;
-  right: 2%!important;
-  width: 20%!important;
-  height: 15%!important;
-  z-index: 1000 !important;
-  border-radius: 0.3rem!important;
-}
-
-.z{
-  z-index: 1000;
+  position: absolute;
+  background:#1565C0;
+  text-align: center;
+  top: 9%;
+  right: 2%;
+  width: 20%;
+  height: 15%;
+  z-index: 1000 ;
+  border-radius: 0.3rem;
 }
 
 .material-icons {
   color: #333;
   }
-
 
 input[type="file"]{
   position: relative;
@@ -63,118 +58,4 @@ label #upload-button{
   padding: 7px 7px 7px 7px;
   cursor: pointer;
   color: #fff;
-
-}
-
-/*.flex{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}*/
-
-
-
-/******************   Profile Pictures   ********************/
-
-
-#profilePic img:hover{
-  border: 1px solid #40F99B;
-}
-
-#profilePicLg{
-  width: 200px;
-  height: 200px;
-  margin-bottom: 15px;
-  margin-top: -125px;
-}
-
-#profilePicLg img{
-  border: 4px solid white;
-}
-
-
-/******************   User Related Info   ********************/
-
-.userDetails{
-  font-size: 1.5rem;
-}
-
-.userInfo{
-  font-size: 1.2rem;
-  margin: auto;
-  margin-bottom: 15px;
-}
-
-.profile{
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  height: auto;
-  position: relative;
-}
-
-.profile img{
-  margin-bottom: 15px;
-}
-
-#username{
-  font-size: 1.5rem;
-  margin-top: 0;
-}
-
-
-#userprofile{
-  border-bottom: none;
-}
-
-
-/******************   Branding   ********************/
-
-/*.by{
-  right: 0;
-  bottom: 0;
-  background-color: #40F99B;
-  color: #232A35;
-  position: fixed;
-  font-weight: bold;
-  z-index: 970000;
-  border-top-left-radius: 0.3em;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-}*/
-
-/******************  Large Title Image Upload   ********************/
-
-#title-upload-button{
-  font-size: 20px;
-  width: 30px;
-  float: left;
-  margin-left: 20px;
-  background: #40F99B;
-  height: 40px;
-  color: #232A35;
-  text-align: center;
-  margin-top: -15px;
-  padding-top: 17px;
-  box-sizing: border-box;
-  border-radius: 0.3rem;
-}
-
-#title-upload-button:hover{
-  color: #5F646C;
-}
-
-#title-img{
-  width: 100%;
-  height: 400px;;
-}
-
-#title-img img{
-  object-fit: cover;
-  object-position: 0 80%;
-  width: 100%;
-  height: 100%;
 }

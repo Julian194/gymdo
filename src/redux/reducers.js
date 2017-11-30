@@ -61,15 +61,14 @@ export default function(state = {}, action) {
   if(action.type == "DELETE_WORKOUT"){
     state = Object.assign({}, state, {
       userWorkouts: _.omit(state.userWorkouts, [action.workoutName])
-      })
-    }
+    })
+  }
 
   if(action.type == "EMPTY_WORKOUT_DAY"){
     state = Object.assign({}, state, {
       workoutDay: null
-    });
+    })
   }
 
   return state;
-
 }

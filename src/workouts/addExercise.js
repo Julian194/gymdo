@@ -36,7 +36,7 @@ class AddExercise extends Component{
 
     if(e.target.name=="name"){
       const val = this.props.exercises.filter(exe => exe.name == e.target.value);
-      this.setState({id:val[0].id})
+      this.setState({external_id:val[0].id})
     }
 
     this.setState({
@@ -67,7 +67,6 @@ class AddExercise extends Component{
 
                 <ExerciseList
                   {...this.props}
-                  {...this.state}
                   handleInput = {this.handleInput}
                 />
               </Row>
@@ -127,7 +126,7 @@ const mapStateToProps = function(state){
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    getExercises: (x) => {dispatch(getExercises(x))},
+    getExercises: (musclegroup) => {dispatch(getExercises(musclegroup))},
     getCurrentExercise : (obj) => {dispatch(getCurrentExercise(obj))},
     addExcerciseToWorkoutDay : (obj) => {dispatch(addExcerciseToWorkoutDay(obj))}
   }
